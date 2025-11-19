@@ -97,8 +97,8 @@ fi
 # Push with safe fast-forward
 #
 echo "🚀 Pushing changes to remote branch..."
-if ! git push --ff-only origin "$INPUT_TARGET_BRANCH"; then
-    echo "⚠️ Fast-forward failed. Attempting safe pull --rebase..."
+if ! git push origin "$INPUT_TARGET_BRANCH"; then
+    echo "⚠️ Push failed. Attempting safe pull --rebase..."
 
     if ! git pull --rebase origin "$INPUT_TARGET_BRANCH"; then
         fail "Auto-rebase failed. Manual conflict resolution required in destination repo."
