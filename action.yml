@@ -1,0 +1,54 @@
+name: "Push To Other Repo"
+description: "Securely sync files or folders from one repository to another without force pushes. Includes safe rebase, branch fallback, detailed logging, and robust edge-case handling."
+author: "Your Name"
+branding:
+  icon: "upload-cloud"
+  color: "blue"
+
+inputs:
+  source_directory:
+    description: "Path to the directory to sync (inside the current repository)."
+    required: true
+
+  destination_repository:
+    description: "Destination GitHub repository in the format owner/repo."
+    required: true
+
+  target_branch:
+    description: "Branch name in the destination repository to sync into."
+    required: true
+
+  user_email:
+    description: "Email used for commit author information."
+    required: true
+
+  user_name:
+    description: "Git username used as the commit author name."
+    required: true
+
+  api_token:
+    description: "GitHub Personal Access Token with read/write repo permissions."
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Git
+      shell: bash
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y rsync git
+
+    - name: Run sync script
+      shell: bash
+      env:
+        INPUT_SOURCE_DIRECTORY: ${{ inputs.source_directory }}
+        INPUT_DESTINATION_REPOSITORY: ${{ inputs.destination_repository }}
+        INPUT_TARGET_BRANCH: ${{ inputs.target_branch }}
+        INPUT_USER_EMAIL: ${{ inputs.user_email }}
+        INPUT_USER_NAME: ${{ inputs.user_name }}
+        INPUT_API_TOKEN: ${{ inputs.api_token }}
+        GITHUB_WORKSPACE: ${{ github.workspace }}
+      run: |
+        chmod +x "${{ github.action_path }}/entrypoint.sh"
+        "${{ github.action_path }}/entrypoint.sh"
