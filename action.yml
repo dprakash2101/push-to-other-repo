@@ -1,6 +1,5 @@
 name: "Push To Other Repo"
 description: "Securely sync files or folders from one repository to another without force pushes."
-author: "Your Name"
 branding:
   icon: "upload-cloud"
   color: "blue"
@@ -52,4 +51,5 @@ runs:
       run: |
         chmod +x "${{ github.action_path }}/entrypoint.sh"
         "${{ github.action_path }}/entrypoint.sh"
+
 
