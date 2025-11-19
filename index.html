@@ -5,67 +5,207 @@
 <title>Push To Other Repo - GitHub Action</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+  :root {
+    --primary-color: #0969da; /* GitHub Blue */
+    --bg-color: #f6f8fa;
+    --card-bg: #ffffff;
+    --text-main: #24292f;
+    --text-muted: #57606a;
+    --border-color: #d0d7de;
+    --code-bg: #161b22;
+    --code-text: #c9d1d9;
+    --accent-gradient: linear-gradient(135deg, #0969da 0%, #0550ae 100%);
+  }
+
+  * { box-sizing: border-box; }
+
   body {
-    font-family: Arial, sans-serif;
-    background: #f7f9fc;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    background: var(--bg-color);
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    color: #333;
+    color: var(--text-main);
   }
+
+  /* Header Area */
   header {
-    background: #0366d6;
+    background: var(--accent-gradient);
     color: #fff;
-    padding: 20px 25px;
+    padding: 40px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
   }
+
   header h1 {
     margin: 0;
-    font-size: 28px;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
   }
-  .container {
-    max-width: 900px;
-    margin: 30px auto;
-    background: #fff;
-    padding: 25px 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+
+  header p {
+    margin-top: 10px;
+    font-size: 18px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
   }
+
+  /* Main Layout */
+  .wrapper {
+    max-width: 1080px;
+    margin: -30px auto 40px; /* Negative margin to overlap header */
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 280px; /* Main content + Sidebar */
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card-bg);
+    padding: 32px;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(140,149,159,0.15);
+    border: 1px solid var(--border-color);
+  }
+
+  /* Typography */
   h2 {
-    border-left: 4px solid #0366d6;
-    padding-left: 10px;
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f1f3;
+    font-size: 24px;
+    color: var(--text-main);
+  }
+
+  h2:not(:first-of-type) {
     margin-top: 40px;
   }
-  pre, code {
-    background: #f0f4f8;
-    padding: 10px;
+
+  p {
+    margin-bottom: 16px;
+    color: var(--text-main);
+  }
+
+  /* Code Blocks */
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 20px;
     border-radius: 6px;
     overflow-x: auto;
-    display: block;
-    border: 1px solid #e2e8f0;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 14px;
+    line-height: 1.45;
+    border: 1px solid #30363d;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.3);
   }
-  .sidebar {
-    margin-top: 40px;
+
+  code.inline {
+    background: rgba(175, 184, 193, 0.2);
+    color: var(--text-main);
+    padding: 0.2em 0.4em;
+    border-radius: 6px;
+    font-size: 85%;
+    font-family: "SFMono-Regular", Consolas, monospace;
+  }
+
+  /* Table Styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px; /* Rounded corners require separate handling or overflow hidden */
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  th {
+    background-color: #f6f8fa;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  /* Sidebar */
+  .sidebar .card {
     padding: 20px;
-    border-radius: 10px;
-    background: #f5f7fa;
-    border: 1px solid #e1e5ea;
+    position: sticky;
+    top: 20px;
   }
+
   .sidebar-section {
     margin-bottom: 20px;
   }
-  .sidebar-section strong {
+
+  .sidebar-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .sidebar-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .sidebar-value {
     font-size: 16px;
+    font-weight: 500;
   }
-  .meta {
-    font-size: 14px;
-    color: #444;
-  }
-  a.link {
-    color: #0366d6;
+
+  .sidebar-value a {
+    color: var(--primary-color);
     text-decoration: none;
   }
-  a.link:hover {
+
+  .sidebar-value a:hover {
     text-decoration: underline;
+  }
+
+  /* Ordered List */
+  ol {
+    padding-left: 20px;
+    color: var(--text-main);
+  }
+  ol li {
+    margin-bottom: 8px;
+    padding-left: 5px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .wrapper {
+      grid-template-columns: 1fr;
+      margin-top: 20px;
+    }
+    header {
+      padding: 30px 20px;
+    }
+    .sidebar .card {
+      position: static;
+    }
   }
 </style>
 </head>
@@ -73,33 +213,40 @@
 <body>
 
 <header>
-  <h1>Push To Other Repo – GitHub Action</h1>
+  <h1>Push To Other Repo</h1>
   <p>Securely sync files or folders from one repository to another without force pushes.</p>
 </header>
 
-<div class="container">
+<div class="wrapper">
 
-  <h2>Overview</h2>
-  <p>
-    This GitHub Action syncs a directory from the current repository into another GitHub repository and branch.
-    It safely clones the destination repo, syncs only the selected folder, commits changes, and pushes without
-    using force pushes.
-  </p>
+  <main class="card">
+    <h2>Overview</h2>
+    <p>
+      This GitHub Action syncs a directory from the current repository into another GitHub repository and branch.
+      It safely clones the destination repo, syncs only the selected folder, commits changes, and pushes 
+      <strong>without using force pushes</strong>.
+    </p>
 
-  <h2>Inputs</h2>
+    <h2>Inputs</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Required</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><code class="inline">source_directory</code></td><td><strong>Yes</strong></td><td>The folder inside the current repo to sync.</td></tr>
+        <tr><td><code class="inline">destination_repository</code></td><td><strong>Yes</strong></td><td>Target repo in <code>owner/repo</code> format.</td></tr>
+        <tr><td><code class="inline">target_branch</code></td><td><strong>Yes</strong></td><td>Branch that will receive updates.</td></tr>
+        <tr><td><code class="inline">user_email</code></td><td><strong>Yes</strong></td><td>Email used for the commit author.</td></tr>
+        <tr><td><code class="inline">user_name</code></td><td><strong>Yes</strong></td><td>Name used for the commit author.</td></tr>
+        <tr><td><code class="inline">api_token</code></td><td><strong>Yes</strong></td><td>GitHub PAT with push permissions.</td></tr>
+      </tbody>
+    </table>
 
-  <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse: collapse;">
-    <tr><th>Name</th><th>Required</th><th>Description</th></tr>
-    <tr><td>source_directory</td><td>Yes</td><td>The folder inside the current repo to sync.</td></tr>
-    <tr><td>destination_repository</td><td>Yes</td><td>Target repo in <code>owner/repo</code> format.</td></tr>
-    <tr><td>target_branch</td><td>Yes</td><td>Branch that will receive updates.</td></tr>
-    <tr><td>user_email</td><td>Yes</td><td>Email used for the commit.</td></tr>
-    <tr><td>user_name</td><td>Yes</td><td>Name used for the commit.</td></tr>
-    <tr><td>api_token</td><td>Yes</td><td>GitHub PAT with push permissions.</td></tr>
-  </table>
-
-  <h2>Example Usage</h2>
-
+    <h2>Example Usage</h2>
 <pre><code>name: Sync files
 
 on:
@@ -121,57 +268,51 @@ jobs:
           target_branch: "main"
           user_email: "automation@example.com"
           user_name: "Sync Bot"
-          api_token: ${{ secrets.REPO_PUSH_TOKEN }}
-</code></pre>
+          api_token: ${{ secrets.REPO_PUSH_TOKEN }}</code></pre>
 
-  <h2>How It Works</h2>
-  <ol>
-    <li>Validates required inputs</li>
-    <li>Clones destination repository</li>
-    <li>Checks out the target branch (or creates it)</li>
-    <li>Syncs selected directory using <code>rsync</code></li>
-    <li>Commits only if changes exist</li>
-    <li>Attempts fast-forward push</li>
-    <li>If blocked, performs safe pull + rebase</li>
-  </ol>
+    <h2>How It Works</h2>
+    <ol>
+      <li>Validates required inputs.</li>
+      <li>Clones the destination repository to a temporary location.</li>
+      <li>Checks out the target branch (or creates it if missing).</li>
+      <li>Syncs the selected directory using <code class="inline">rsync</code> (mirroring deletions).</li>
+      <li>Commits only if actual file changes are detected.</li>
+      <li>Attempts a <strong>fast-forward push</strong>.</li>
+      <li>If blocked, performs a safe <strong>pull + rebase</strong> sequence.</li>
+    </ol>
 
-  <h2>Token Requirements</h2>
+    <h2>Token Requirements</h2>
+    <p>A Personal Access Token (PAT) is required to push to external repositories.</p>
+    <pre><code>Scope required: repo (or contents: write)</code></pre>
+  </main>
 
-<pre><code>repo
-</code></pre>
-
-  <p>A PAT with <code>repo</code> or <code>contents: write</code> permissions is required.</p>
-
-  <div class="sidebar">
-
-    <aside>
-      <div class="card">
-
-        <div class="sidebar-section">
-          <strong>Author</strong>
-          <div class="meta" style="margin-top:8px">
-            <a class="link" href="https://github.com/dprakash2101" target="_blank" rel="noopener">
-              Devi Prakash
-            </a>
-          </div>
+  <aside class="sidebar">
+    <div class="card">
+      <div class="sidebar-section">
+        <span class="sidebar-label">Author</span>
+        <div class="sidebar-value">
+          <a href="https://github.com/dprakash2101" target="_blank" rel="noopener">
+            <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16" style="vertical-align: text-bottom; fill: currentColor; margin-right: 4px;"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.27-1.27-.55-1.53 3.72-.42 5.07-1.87 5.07-4.17 0-.93-.32-1.72-.87-2.32.09-.22.37-1.09-.09-2.27 0 0-.73-.23-2.42.91-.68-.19-1.43-.29-2.18-.29-.75 0-1.49.1-2.18.29-1.69-1.14-2.42-.91-2.42-.91-.47 1.18-.18 2.05-.09 2.27-.55.61-.87 1.39-.87 2.32 0 2.3 1.35 3.75 5.07 4.17-.27.24-.55.71-.55 1.42 0 1.02.01 1.85.01 2.1 0 .21-.15.47-.55.38A8.013 8.013 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></svg>
+            Devi Prakash
+          </a>
         </div>
-
-        <div class="sidebar-section">
-          <strong>License</strong>
-          <div class="meta" style="margin-top:8px">
-            MIT — see 
-            <a class="link"
-               href="https://github.com/dprakash2101/push-to-other-repo/blob/main/LICENSE"
-               target="_blank" rel="noopener">
-              LICENSE
-            </a>
-          </div>
-        </div>
-
       </div>
-    </aside>
 
-  </div>
+      <div class="sidebar-section">
+        <span class="sidebar-label">License</span>
+        <div class="sidebar-value">
+          <a href="https://github.com/dprakash2101/push-to-other-repo/blob/main/LICENSE" target="_blank" rel="noopener">
+             MIT License
+          </a>
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <span class="sidebar-label">Version</span>
+        <div class="sidebar-value">v1.0.0</div>
+      </div>
+    </div>
+  </aside>
 
 </div>
 
